@@ -1,0 +1,60 @@
+Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+You must solve this problem without using the library's sort function.
+ 
+Example 1:
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+Example 2:
+
+Input: nums = [2,0,1]
+Output: [0,1,2]
+
+Method 1 : 
+
+Apply a sorting algorithm.(Quick or Merge)
+
+Time Complexity : O(nlogn)
+Space Complexity : O(1).
+
+Method 2 : (Using a HashMap or 3 variables)
+
+Traversing the given array one by one and maintaining the frequency of 0s 1s 2s in the map.
+Replacing the values of array with 0s frequency and then 1s frequency and then 2s frequency gives the array in sorted fashion.
+
+Time Complexity : O(n) for traversing the array.
+Space Complexity : O(3) for using hashmap.
+
+Method 3: (2 times traversal)
+
+For the first traversal make sure that the all the zeroes in the array are in the starting of the array with the help of counter variable.
+
+For the second traversal make sure that all the ones in the array are accumulated after the zeroes with the help of counter variable.
+
+Automatically the 2s will be end of the array.
+
+TimeComplexity : O(n+n) = O(n)
+SpaceComplexity : O(1)
+
+Code :
+
+public int sortByPlaceholder(int arr[],int size,int placeholder){
+    int last = arr.length-1;
+    while(size<=last){
+        if(arr[size] == placeholder){
+            size++;
+        }
+        else if(arr[size]!=placeholder && arr[last] == placeholder){
+            swap(arr,size++,last--);
+        }
+        else{
+            last--;
+        }
+    }
+    return size;
+}
+
+
