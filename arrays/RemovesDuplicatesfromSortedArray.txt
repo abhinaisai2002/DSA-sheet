@@ -1,0 +1,57 @@
+Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same.
+
+Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+
+Return k after placing the final result in the first k slots of nums.
+
+Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
+
+Example 1:
+Input: nums = [1,1,2]
+Output: 2, nums = [1,2,_]
+
+Example 2:
+Input: nums = [0,0,1,1,1,2,2,3,3,4]
+Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+
+--------------------------------------------------------------------------------
+
+Method 1:(Using extra space)
+
+Traverse the array elements one by one.If the array is empty add the first element and maintain a pointer k.
+
+After that comparing the array elements with k index value.If they both are equal traverse to next element, If they both are not equal add the element into the unique array and increment k.
+
+This is done upto traversing all the elements.
+
+Copying the elements from unique array to the original array and returning the k as the answer.
+
+Time Complexity : O(n).
+Space Complexity : O(n).
+
+Method 2 :(Constant extra space)
+
+1.Maintain two pointers start=0 end=0.
+2.If start == end then end++.
+3.If start != end then arr[++start] = arr[end]
+4.Upto the end reaching the last element of array. 
+5.Return start+1 as the answer.
+
+Code :
+public int removeDuplicates(int[] nums) {    
+    int first = 0;
+    int second = 0;
+    
+    while(second<nums.length){
+        if(nums[first] == nums[second]){
+            second++;
+        }
+        else{
+            nums[++first] = nums[second];
+        }
+    }
+    return first+1;
+}
+
+Time Complexity : O(n).
+SpaceComplexity : O(1).
