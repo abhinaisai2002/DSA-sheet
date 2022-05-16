@@ -1,0 +1,73 @@
+Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.
+There is only one repeated number in nums, return this repeated number.
+You must solve the problem without modifying the array nums and uses only constant extra space.
+
+Eg:
+i : nums = [1,3,4,2,2]
+o : 2
+i : nums = [3,1,3,4,2]
+o : 3
+
+Method 1 : (Using a HashMap/HashSet)
+
+Traversing the array element by element and if the element is not in the map we are going to add the element into the map.
+The repeated element is 100% present in list.So while traversing a element is going to be already present in the map.
+That element is the repeated element.
+
+Time Complexity : Traversing the array is O(n).
+Space Complexity : Map->O(n).
+
+Method 2 : (Cyclic Sort)
+
+Cyclic sort is applied to the array whenever a continous range is given. Eg : [1,n] or [0,n].
+
+When the cyclic sort is applied the element 1 is going to be at index 0 and element 2 is going to be at index 1 and so on...
+
+For repeated element -> element!=index+1 at the particular position we are going to return the element is repeated.
+
+Code for cylic sort:
+
+public void cyclicSort(int arr[]){
+    int i=0;
+    while(i<arr.length){
+        int correct = arr[i]-1;
+        if(arr[i]!=arr[correct]){
+            swap(arr,i,correct);
+        }
+        else
+            i++;
+    }
+}
+public void swap(int arr[],int i,int j){
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+Time Complexity : O(n).
+Space Complexity : O(1).
+
+Method 3:
+
+Traverse the array one by one (Take the absolute value.).Check the value in the element index.
+If the value is positive replace it with negative number.If the element is negative already,this means that we already visited this element.We are visiting the element second time.
+This element index is going to be duplicate number.
+
+Code :
+public int findDuplicate(int[] nums) {
+    
+    for(int i=0;i<nums.length;i++){
+        int ind = Math.abs(nums[i]);
+        
+        if(nums[ind] < 0)return ind;
+        
+        nums[ind] = -1 * nums[ind];
+        
+    }
+    
+    return -1;
+}
+
+Time Complexity = O(n).
+Space Complexity = O(1).
+
