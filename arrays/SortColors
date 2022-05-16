@@ -58,4 +58,39 @@ public int sortByPlaceholder(int arr[],int size,int placeholder){
 
 }
 
+Method 4 :
 
+Maintaining 3 pointer low (representing the end of zeroes),high(representing the start of twos),
+mid(representing the ones)
+
+Traverse from mid to high upto mid>high
+1.If mid is 0 swap low++ with mid++
+2.If mid is 2 swap mid with high--
+3.If mid is 1 increment mid
+
+Here we are pushing all the zeroes to the starting of the array and pushing all the twos in the ending of the array,so that all the ones all accumulated in the middle of zeroes and twos automatically.
+
+Code :
+public void sortColors(int[] nums) {
+    int low = 0;
+    int mid = 0;
+    int high = nums.length-1;
+    
+    while(mid<=high){
+        if(nums[mid] == 0){
+            swap(nums,low++,mid++);
+        }else if(nums[mid] == 1){
+            mid++;
+        }else{
+            swap(nums,mid,high--);
+        }
+    }
+}
+public void swap(int arr[],int i,int j){
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+Time Complexity : O(n)
+Space Complexity : O(1)
