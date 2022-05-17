@@ -1,0 +1,73 @@
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+Example 1:
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+Example 2:
+Input: nums = [3,2,4], target = 6
+Output: [1,2]
+Example 3:
+
+Input: nums = [3,3], target = 6
+Output: [0,1]
+
+Method 1 :
+
+Traverse the array elements one by one.For each element in the iteration start a nested loop starting with next index to the end of the array.If the element in the outer loop and the element in the inner loop sum matches with the target, then return the 2 indices as an array.
+
+If the outer loop is terminated then there is no 2 sum in the array.
+
+Then return {-1,-1}.
+
+Code :
+
+public int[] twoSum(int[] nums, int target) {
+    for(int i=0;i<nums.length-1;i++){
+        for(int j=i+1;j<nums.length;j++){
+            if(nums[i] + nums[j] == target)
+                return new int[] {i,j};
+        }
+    }
+    return new int[] {0,0};
+}
+
+Time Complexity : O(n*n)
+Space Complexity : O(1).
+
+Method 2 :
+
+
+Code :
+
+Create a hashmap.{element : index}
+Intuition:
+element1 + element2 = target
+target - element1 = element2
+-------------
+Traverse the array elements one by one.If the target-element is in the hashmap then the element value in the map and current index is the answer,return the array with those values.
+If the target-element is not in hashmap then the remaining part is not visired upto current index.
+We are going to add the current element in map so that it is used in future.
+
+
+public int[] twoSum(int[] nums, int target) {
+    Map<Integer,Integer> map = new HashMap<>();
+    
+    for(int i=0;i<nums.length;i++){
+        if(map.containsKey(target-nums[i])){
+            return new int[] {map.get(target-nums[i] ),i};
+        }
+        else{
+            map.put(nums[i],i);
+        }
+    }
+    return new int[] {-1,-1};
+}
+
+Time Complexity : O(n).
+Space Complexity : O(n).
