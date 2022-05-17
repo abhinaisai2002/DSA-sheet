@@ -1,0 +1,158 @@
+Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+
+You must do it in place.
+
+Input: 
+matrix = [
+    [1,1,1],
+    [1,0,1],
+    [1,1,1]
+]
+Output: 
+matrix = [
+    [1,0,1],
+    [0,0,0],
+    [1,0,1]
+]
+
+Method 1 : (BruteForce)
+
+Maintain a new duplicate 2d array so that the changes made in the original array doesnot affect the original array.
+
+Traverse the original array one by one.If the element(i,j) is zero fill the row i and column j with zeroes.
+
+Time Complexity : O(n*m) * O(n+m)
+Space Complexity : O(n*m)
+
+Method 2 : 
+
+Same as method 1 if we do not use temp array instead of zeroes if we put -1 ,this is not going to effect the original array in future which causes all zeroes in matrix.
+
+At last we can replace the values in the array having the value -1 with 0.
+
+Time Complexity : O(n*m)*O(n+m) + O(n*m)
+Space Complexity : O(1)
+
+Method 3 :
+
+Maintaing two(rows and cols) one d arrays with size n and m,initialized with -1.
+
+Traversing the 2d array one by one.If the element is 0 at (i,j) put 0 in rows[i] and cols[j].
+If the element is 1 at (i,j), if rows[i] is 0 donot override with 1 and if rows[i] is -1 place the value 0 in rows[i].
+The same applies to cols[i].
+
+After that,
+Traverse the rows array,
+If the rows element is 0 replace the whole row values with 0,if it is 1 continue in the whole array.
+Traverse the cols array,
+If the cols element is 0 replace the whole cols values with 0,if it is 1 continue in the whole array.
+
+Code :
+public void setZeroes(int[][] matrix) {
+
+    int rows[] = new int[matrix.length];
+    int cols[] = new int[matrix[0].length];
+    
+    Arrays.fill(rows,-1);
+    Arrays.fill(cols,-1);
+    
+    for(int i=0;i<matrix.length;i++){
+        for(int j=0;j<matrix[0].length;j++){
+            if( matrix[i][j] == 0){
+                rows[i] = 0;
+                cols[j] = 0;
+            }
+            else{
+                if(rows[i]==-1)
+                    rows[i] = 1;
+                if(cols[j]==-1)
+                    cols[j] = 1;
+            }
+        }
+    }
+    
+    for(int i=0;i<rows.length;i++){
+        if(rows[i] == 0){
+            for(int j=0;j<cols.length;j++){
+                matrix[i][j]  = 0;
+            }
+        }
+    }
+    for(int i=0;i<cols.length;i++){
+        if(cols[i] == 0){
+            for(int j=0;j<rows.length;j++){
+                matrix[j][i]  = 0;
+            }
+        }
+    }
+}
+
+Time Complexity : O(n*m).
+Space Complexity : O(n+m).
+
+Method 4 :
+
+This method is same as method 3 ,instead of using 2 arrays we can put the values of the 1d arrays in the matrix itself.But there is going to cell which is going to be common in both arrays.
+
+[
+    [Common cell, , ],
+    [ , , ],
+    [ , , ],
+]
+
+The rows array values are inserted in matrix 1st row.
+The cols array values are inserted in matrix 1st col and the first element which is occupied by the 1st row is placed in a seperate variable.
+
+Applying the same algorithm with these constraints gives the solution.
+
+/****************************************
+* Make all rows zeroes 
+* Make all columns zeroes
+* Make the cell row zero if it has to be done.
+*****************************************/
+
+Time Complexity : O(n*m).
+Space Complexity : O(1).
+
+Code :
+
+public void setZeroes(int[][] matrix) {
+
+    int cell = matrix[0][0];
+    
+    for(int i=0;i<matrix.length;i++){
+        for(int j=0;j<matrix[0].length;j++){
+            if( matrix[i][j] == 0){
+                if(i==0){
+                    cell = 0;
+                    matrix[0][j] = 0;
+                }
+                else{
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+    }
+    
+    for(int i=1;i<matrix.length;i++){
+        if(matrix[i][0] == 0){
+            for(int j=0;j<matrix[i].length;j++){
+                matrix[i][j]  = 0;
+            }
+        }
+    }
+    for(int i=0;i<matrix[0].length;i++){
+        if(matrix[0][i] == 0){
+            for(int j=0;j<matrix.length;j++){
+                matrix[j][i]  = 0;
+            }
+        }
+    }
+    if(cell == 0){
+        for(int j=0;j<rows.length;j++){
+            matrix[cell][j]  = 0;
+        }
+    }
+}
+
