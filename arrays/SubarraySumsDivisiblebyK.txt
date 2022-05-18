@@ -1,0 +1,67 @@
+Given an integer array nums and an integer k, return the number of non-empty subarrays that have a sum divisible by k.
+A subarray is a contiguous part of an array.
+
+Input: nums = [4,5,0,-2,-3,1], k = 5
+Output: 7
+Explanation: There are 7 subarrays with a sum divisible by k = 5:
+[4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2, -3], [-2, -3]
+
+Method 1: (Brute Force solution)
+
+Maintain a counter = 0
+
+Maintain two loops outer loop and inner loop,Fix an element in the outerloop and iterate the innerloop from 
+outerloop index + 1 to last index of the array.
+Calculate the possible sums of the subarrays and find where it is divisible by k not.
+If the sum is divisible by k then increment the counter.
+
+Code :
+
+public int subarraysDivByK(int[] nums, int k) {
+    int count = 0;
+    int sum = 0;
+    for(int i=0;i<nums.length;i++){
+        sum = nums[i];
+        for(int j=i+1;j<nums.length;j++){
+            sum += nums[j];
+            if(sum%k == 0)++count;
+        }
+    }
+    return count;
+}
+
+Time Complexity : O(n*n).
+Space Complexity : O(1).
+
+Method 2:
+
+public int subarraysDivByK(int[] A, int K) {
+    int[] map = new int[K];
+    map[0] = 1;
+    int count = 0, sum = 0;
+    for (int a : A) {
+        sum = (sum + a) % K;
+        if (sum < 0) sum += K;
+        count += map[sum];
+        map[sum]++;
+    }
+    return count;
+}
+
+Maintain a hashmap with the initial value {0:1}.
+Maintain a sum variable sum = 0.
+count = 0
+Add each element from the array to the sum.Find the remainder of the sum divided by k.If the remainder is already in the map,add the {remainder:value} value to the count variable and increase its value in dictionary,if remainder is not in the map add the remainder as the key with value = 1.
+If remainder is less than zero add k to the remainder,and continue the same operation
+k=7
+[........,sum=2,-7(sum=-5)]
+sum = -5,but -7 divided by 7.
+But -5 shows it cant be divided leaving a remainder -2 which is not in map.
+add k to it -5 + 7 = 2 is in map which counts that -7 is divisible by 7.
+
+Code :
+
+
+
+Time Complexity : O(n).
+Space Complexity : O(n).
