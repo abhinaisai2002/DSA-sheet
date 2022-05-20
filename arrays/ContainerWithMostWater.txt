@@ -1,0 +1,63 @@
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+Notice that you may not slant the container
+
+Method 1 :
+
+This is the basic approach.
+Maintaing a nested for loop with outer loop and inner loop.
+Outerloop fixes a height while the nested loop tries to maintain the second height.
+For every iteration the volume of water between those 2 heights is calculated.If that volume is greater than the max volume update the max volume.
+
+Code :
+
+public int maxArea(int[] height) {
+    int max = Integer.MIN_VALUE;
+
+    for(int i=0;i<height.length;i++){
+        for(int j=0;j<height.length;j++){
+            int volume = Math.min(height[i],height[j]) * Math.abs(i-j);
+            max = Math.max(max,volume);
+        }
+    }
+    return max;
+}
+
+Time Complexity : O(n*n).
+Space Complexity : O(1).
+
+Method 2 : (Two pointer approach)
+
+max = Integer.MIN_VALUE
+
+Maintain two pointers in the array left and right.Calculate the volume update the max.
+If height[left] < height[right] then ++left.
+else --right.
+Calculate the current volume and update the max volume.
+
+This is done upto left < right.
+
+Code :
+
+public int maxArea(int[] height) {
+    int maximumWater = 0;
+    int left = 0;
+    int right = height.length-1;
+    int curr_water = 0;
+    while(left<right){
+        curr_water = (right-left)*Math.min(height[left],height[right]);
+        maximumWater = Math.max(maximumWater,curr_water);
+        if(height[left] < height[right])
+            left++;
+        else
+            right--;
+    }
+    return maximumWater;
+}
+
+Time Complexity : O(n).
+Space Complexity : O(1).
