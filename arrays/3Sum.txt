@@ -1,0 +1,110 @@
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+Example 1:
+
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+
+
+Method 1:
+
+The Brute Force approach for this problems maintaining 3 nested loops.
+1 -> loop1
+2 -> loop2
+3 -> loop3
+
+Fix an element with index i in the loop1 up to arr.length-3 and iterate from i+1 to end of the array in loop2.
+In this iteration of loop2 fix an element with index j and start iteration of loop3 with index j+1 to end of the array.
+The loop3 is iterated with index z to the end of the array.
+
+Everytime loop3 is iterated we are going to calculate the sum arr[i]+arr[j]+arr[z].
+If the sum is zero/target_sum we are going to add the elements in result arraylist in sorted manner.
+
+return the final result arraylist as the answer.
+
+Code :
+
+public List<List<Integer>> threeSum(int[] nums) {
+    
+    List<List<Integer> ans = new ArrayList<>();
+
+    for (int i = 0; i < nums.length - 2; i++) {
+        for (int j = i + 1; j < nums.length - 1; j++) {
+            for (int k = j + 1; k < nums.length; k++) {
+                if (nums[i] + nums[j] + nums[k] == 0) {
+                    ans.add(Arrays.asList(nums[i] , nums[j] , nums[k]))
+                }
+            }
+        }
+    }
+
+    return ans;
+}
+
+Time Complexity : O(n*n*n).
+Space Complexity : O(3n).
+
+Method 2:
+
+The main intuition of these technique is to use the 2sum in sorted manner with 2 pointer approach.
+
+Sort the array elements for increasing the efficiency of the code.
+
+Iterate the array elements  with index i from 0 to array.length-2.Fix an element in this loop.
+a + b + c = 0
+We fix an element a , so we need find the 2sum from i+1 to end of the array such that the sum of the 2 elements should be 
+b+c.
+b+c = -a.
+If we fing b+c in remaining sorted array,then there is a triplet giving zero sum.
+
+public int TwoSum(int arr[],int target){ // returning the number of 2 sums in the array upon adding gives target.
+    int left = 0;
+    int right = arr.length-1;
+    int counts = 0;
+    while(left<right){
+        if(arr[left] + arr[right] == target){
+            ++counts;
+            while(left<right && arr[left]==arr[left+1])++left;
+            // escaping the repeated elements so that duplicates sets are not recorded.
+            while(left<right && arr[right]==arr[right-1])--right;
+            ++left;
+            right--
+        }
+        else if(arr[left] + arr[right] ) --right;
+        else ++left;
+    }
+
+    return counts;
+}
+
+While iterating the array with index i we need to check if arr[i] != arr[i-1] otherwise i++,so that we eliminate duplicates.
+[1,1,2]
+we calcuate all the 3 sums for 1 with help of 2sum.
+in the next iteration we are again calcuating 3sums for 1,so we need to eliminate this with the help of above condition.
+
+Code :
+public List<List<Integer>> threeSum(int[] nums) {
+    List<List<Integer>> ans = new ArrayList<>()
+    Arrays.sort(nums);
+    for(int i=0;i<nums.length-2;i++){
+        if(i==0 || ( i>0 && nums[i] !=nums[i-1] ) ){
+            int target = -1*nums[i];
+            int left = i+1;
+            int right=nums.length-1;
+            while(left<right){
+                if(nums[left]+nums[right] == target){
+                    ans.add(Arrays.asList(nums[i],nums[left],nums[right]));
+                    while(left<right && nums[left] == nums[left+1])++left;
+                    while(left<right && nums[right]== nums[right-1])--right;
+                    left++;
+                    right--;
+                }
+                else if(nums[left] + nums[right] < target) ++left;
+                else --right;
+            }
+        }
+    }
+    return ans;   
+}
