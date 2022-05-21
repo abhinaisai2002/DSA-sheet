@@ -1,0 +1,84 @@
+Given an m x n matrix, return all elements of the matrix in spiral order.
+
+Example 1:
+
+1 -> 2 -> 3
+          |
+4 -> 5    6
+|         |
+7 <- 8 <- 9  
+
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [1,2,3,6,9,8,7,4,5]
+
+Method 1:
+
+There is only one approach for this problem,similar to brute force.
+
+Maintain 4 pointers 
+columnStart = 0, columnEnd = length of column 
+rowStart = 0, rowEnd = length of matrix
+
+Create a array list.
+
+Add the elements from columnStart to columnEnd in rowStart.
+We visited all the elements in rowStart,we need to visit new row,so increment the rowStart.
+
+From rowStart to rowEnd in columnEnd visit the elements in the matrix.
+We visited all the elements columnEnd,so we need to visit the elements in previous column,so decrement the columnEnd.
+
+-----------------------
+After this step we need to check
+rowStart<rowEnd && columnStart<columnEnd so that if the matrix is 1xn or nx1 we will not end up visiting the elements in consecutive steps  which are visited in the above steps.
+
+-----------------------
+
+From columnEnd to columnStart in rowEnd visit all the elements in matrix.We completed visiting the elements in rowEnd,so decrement the rowEnd.
+
+Visit all the elements in columnStart from rowEnd to rowStart and add the elements to the result,and increment the columnStart after visiting it.
+
+Repeat this process until 
+rowStart<rowEnd and columnStart<columnEnd
+
+Code :
+
+public List<Integer> spiralOrder(int[][] matrix) {
+        
+    List<Integer> ans = new ArrayList<>();
+    
+    int columnStart = 0;
+    int columnEnd = matrix[0].length;
+    
+    int rowStart = 0;
+    int rowEnd = matrix.length;
+    
+    int loops = rowEnd/2;
+    
+    while(rowStart<rowEnd && columnStart<columnEnd){
+        for(int i=columnStart;i<columnEnd;i++){
+            ans.add(matrix[rowStart][i]);
+        }
+        rowStart++;
+        for(int i=rowStart;i<rowEnd;i++){
+            ans.add(matrix[i][columnEnd-1]);
+        }
+        columnEnd--;
+        
+        if(!( rowStart<rowEnd && columnStart<columnEnd))    
+            break;
+        
+        for(int i=columnEnd-1;i>=columnStart;i--){
+            ans.add(matrix[rowEnd-1][i]);
+        }
+        rowEnd--;
+        for(int i=rowEnd-1;i>=rowStart;i--){
+            ans.add(matrix[i][columnStart]);
+        }
+        columnStart++;
+    }
+
+    return ans;
+}
+
+Time Complexity : O(n*n).
+Space Complexity : O(1).
