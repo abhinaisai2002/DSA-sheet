@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print greeting
-        run: cat arrays/3Sum.txt
+        run: main.yml
       - name: print bye
         run: echo "Bye"
       
